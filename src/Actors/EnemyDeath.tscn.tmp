@@ -1,0 +1,51 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://assets/Enemy.png" type="Texture" id=1]
+[ext_resource path="res://src/Actors/EnemyDeath.gd" type="Script" id=3]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 22.5, 20.5 )
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 24, 14.5 )
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 23.75, 6 )
+
+[node name="KinematicBody2D" type="KinematicBody2D"]
+script = ExtResource( 3 )
+
+[node name="Enemy" type="Sprite" parent="."]
+scale = Vector2( 0.359999, 0.359999 )
+texture = ExtResource( 1 )
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
+position = Vector2( -0.5, -3.5 )
+shape = SubResource( 1 )
+
+[node name="HitboxKill" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxKill"]
+position = Vector2( -1, 1.5 )
+shape = SubResource( 2 )
+
+[node name="HitboxDie" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxDie"]
+position = Vector2( 1.25, -19 )
+shape = SubResource( 3 )
+
+[node name="floorCheck" type="RayCast2D" parent="."]
+position = Vector2( -22, -10 )
+enabled = true
+cast_to = Vector2( 0, 27 )
+collision_mask = 9
+
+[node name="wallCheck" type="RayCast2D" parent="."]
+position = Vector2( 4, 0 )
+enabled = true
+cast_to = Vector2( -28, 0 )
+collision_mask = 8
+
+[connection signal="body_entered" from="HitboxKill" to="." method="_on_HitboxKill_body_entered"]
+[connection signal="body_entered" from="HitboxDie" to="." method="_on_HitboxDie_body_entered"]
